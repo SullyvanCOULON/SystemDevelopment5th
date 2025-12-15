@@ -21,7 +21,7 @@ jobs:
             - name: Install dependencies
               run: |
                     python -m pip install --upgrade pip
-                    pip install pytest pytest-cov ruff
+                    pip install pytest pytest-cov ruff==0.4.4
                     if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
             - name: Run tests with coverage
@@ -43,6 +43,10 @@ jobs:
                     pytest tests/ --cov=src --cov-report=term | grep -E "(TOTAL|Name)" >> $GITHUB_STEP_SUMMARY
                     echo '```' >> $GITHUB_STEP_SUMMARY
 
-            - name: Run ruff linter
+            - name: Run linter check
               run: |
-                    ruff format .
+                    ruff check .
+
+            - name: Run formatter check
+              run: |
+                    ruff format --check .
